@@ -1,28 +1,21 @@
 import httplib
+import urllib2
 from urllib2 import Request, urlopen, URLError
 
 def http_connects(site,page):
- #checks if page is up print 200 ok response
+ #checks if page is up  if its up it returns its text message/contents
     connect = httplib.HTTPConnection(site)
     connect.request("GET",page)
     request1 = connect.getresponse()
     print request1.status, request1.reason
-
-    data1 = request1.read()
-    connect.request("GET", "/security.html")
-    request2 = connect.getresponse()
-    print request2.status, request2.reason 
-
-    data2 = request2.read()
-    #Gets facebook startpage html source
-    request = Request('http://facebook.com/')
-
+        
     try:
-        response = urlopen(request)
-        rsp = response.read()
-        print rsp[559:1000]
+            link="http://"+site+page
+            requesturl = urllib2.Request(link, headers={'User-Agent' : "Mozilla"})
+            opencon = urllib2.urlopen(requesturl)
+            print opencon.read()        
     except URLError, e:
-        print 'an error occured:', e
+        print 'wrong entry', e
     connect.close()
-
-http_connects("www.technologynet.co.ke", "/index.html")
+    
+http_connects("www.technologynet.co.ke", "/andela.html")
